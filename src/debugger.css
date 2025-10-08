@@ -1,0 +1,51 @@
+.debugger {
+  flex: 1 1;
+  height: auto;
+  background-color: #1f1f1f;
+  border-radius: 10px;
+  max-width: 475px;
+  min-height: 200px;
+  overflow: hidden;
+  border: 1px solid rgb(52, 56, 61);
+box-shadow: rgba(0, 0, 0, 0) 0 0 0 0, rgba(0, 0, 0, 0) 0 0 0 0, rgba(0, 0, 0, 0) 0 0 0 0, rgba(0, 0, 0, 0) 0 0 0 0, rgba(0, 0, 0, 0.1) 0 1px 3px 0, rgba(0, 0, 0, 0.1) 0 1px 2px -1px
+}
+
+.network-row {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.network-row-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  color: oklch(0.708 0 0);
+  font-size: 12px;
+}
+.network-row {
+  border-bottom: 1px solid #34383e;
+}
+.network-row:last-child {
+  border-bottom: none;
+}
+.network-row-requests {
+  border-top: 1px solid #34383e;
+  background-color: #1f1f1f;
+  padding: 10px;
+  font-size: 12px;
+  color: oklch(0.708 0 0);
+}
+
+.network-controls {
+  display: flex;
+  gap: 6px
+
+}
+.network-request {
+  margin-bottom: 5px
+}
+
+input[type="range"] {
+  accent-color: #fff; /* Example: Green */
+}

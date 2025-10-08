@@ -1,0 +1,1 @@
+{"watch": ["server.js"], "ignore": ["node_modules", "src", "public"]}
