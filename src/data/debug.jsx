@@ -87,7 +87,7 @@ export function delayedFetch(url, options) {
   const { delay, path } = getRequestConfig(url);
   const request = addRequest(path, {
     id: requestId,
-    label: `GET ${url}`,
+    label: `${options?.method || "GET"} ${url}`,
     start: Date.now(),
     done: false,
     delay: delay,
