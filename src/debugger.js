@@ -129,7 +129,7 @@ function NetworkRequest({ label, id, api, row }) {
     input.value = api.delay;
     input.addEventListener("input", (e) => {
       setDelay(id, e.target.value);
-      span.textContent = e.target.value + "s";
+      span.textContent = e.target.value + "ms";
     });
     controls.appendChild(span);
     controls.appendChild(input);
