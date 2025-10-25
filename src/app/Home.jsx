@@ -1,4 +1,4 @@
-import { Suspense, use, ViewTransition } from "react";
+import { Suspense, use, ViewTransition, addTransitionType } from "react";
 import * as Design from "@/design";
 import { useRouter } from "@/router/index.jsx";
 import * as data from "@/data/index.js";
@@ -52,19 +52,33 @@ function LessonList({ tab, search, completeAction }) {
      */
     <ViewTransition key="results" default="none" enter="auto" exit="auto">
       <Design.List>
-        {lessons.map((item) => (
+        {lessons.map((item, index) => (
           /**
            * This ViewTransition will animate unique items in the list.
            * For example, when searching, existing items will "move" to
            * their new positions, and new items will fade in. Items that
            * are no longer in the list will fade out.
            */
-          <ViewTransition key={item.id}>
+          <ViewTransition
+            key={item.id}
+            update={
+              tab === "all"
+                ? {
+                    tabSwitch: "auto",
+                    default: "none",
+                  }
+                : { [`exclude-${index}`]: "none" }
+            }
+          >
             <Lesson
               id={item.id}
-              lessons={lessons}
               item={item}
-              completeAction={completeAction}
+              completeAction={(id) => {
+                for (let i = 0; i < index; i++) {
+                  addTransitionType(`exclude-${i}`);
+                }
+                return completeAction(id);
+              }}
             />
           </ViewTransition>
         ))}
@@ -85,6 +99,7 @@ export default function Home() {
     router.setParams("q", value);
   }
   function tabAction(value) {
+    addTransitionType("tabSwitch");
     /**
      * Since this is an Action we know this updates in a transition.
      */
