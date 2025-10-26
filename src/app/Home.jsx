@@ -60,12 +60,15 @@ function LessonList({ tab, search, completeAction }) {
            * are no longer in the list will fade out.
            */
           <ViewTransition key={item.id}>
-            <Lesson
-              id={item.id}
-              lessons={lessons}
-              item={item}
-              completeAction={completeAction}
-            />
+            <div>
+              <ViewTransition default="none">
+                <Lesson
+                  id={item.id}
+                  item={item}
+                  completeAction={completeAction}
+                />
+              </ViewTransition>
+            </div>
           </ViewTransition>
         ))}
       </Design.List>
