@@ -1,52 +1,35 @@
-"use client";
-
-import { useRouter, useSearchParams } from "next/navigation";
-import { startTransition } from "react";
+import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import * as Design from "@/components/design";
 import LessonList from "@/components/LessonList";
-import { toggleLessonAction } from "@/lib/actions";
-import type { Lesson } from "@/lib/data";
+import { getLessons, postLessonToggle } from "@/lib/data";
+import { homeUrl } from "@/lib/urls";
 
 interface HomeContentProps {
-  lessons: Lesson[];
   tab: string;
   search: string;
 }
 
-export default function HomeContent({
-  lessons,
+export default async function HomeContent({
   tab,
   search,
 }: HomeContentProps) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  const lessons = await getLessons(tab, search);
 
-  function searchAction(value: string) {
-    const params = new URLSearchParams(searchParams.toString());
-    if (value) {
-      params.set("q", value);
-    } else {
-      params.delete("q");
-    }
-    startTransition(() => {
-      router.replace(`/?${params.toString()}`);
-    });
+  async function searchAction(value: string) {
+    "use server";
+    redirect(homeUrl(tab, value));
   }
 
-  function tabAction(value: string) {
-    const params = new URLSearchParams(searchParams.toString());
-    if (value && value !== "all") {
-      params.set("tab", value);
-    } else {
-      params.delete("tab");
-    }
-    startTransition(() => {
-      router.replace(`/?${params.toString()}`);
-    });
+  async function tabAction(value: string) {
+    "use server";
+    redirect(homeUrl(value, search));
   }
 
   async function completeAction(id: string) {
-    await toggleLessonAction(id);
+    "use server";
+    await postLessonToggle(id);
+    revalidatePath("/");
   }
 
   return (

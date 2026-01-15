@@ -1,4 +1,5 @@
 import * as fuzzy from "fast-fuzzy";
+import { getDelay } from "./debug-store";
 
 export interface Lesson {
   id: string;
@@ -55,9 +56,10 @@ const lessons: Lesson[] = [
 
 export async function getLessons(
   tab: string,
-  search: string,
-  delay: number = 0
+  search: string
 ): Promise<Lesson[]> {
+  const delay = getDelay("/lessons");
+  console.log('delay', delay);
   let filteredLessons = [...lessons];
   if (tab === "wip") {
     filteredLessons = lessons.filter((lesson) => !lesson.complete);
@@ -78,10 +80,8 @@ export async function getLessons(
   });
 }
 
-export async function postLessonToggle(
-  id: string,
-  delay: number = 0
-): Promise<void> {
+export async function postLessonToggle(id: string): Promise<void> {
+  const delay = getDelay("/lesson/:id/toggle");
   return new Promise((resolve) => {
     setTimeout(() => {
       const lesson = lessons.find((lesson) => lesson.id === id);
@@ -93,7 +93,8 @@ export async function postLessonToggle(
   });
 }
 
-export async function postLogin(delay: number = 0): Promise<void> {
+export async function postLogin(): Promise<void> {
+  const delay = getDelay("/login");
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve();
