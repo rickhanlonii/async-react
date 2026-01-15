@@ -1,5 +1,3 @@
-"use client";
-
 import SearchInput from "./SearchInput";
 import TabList from "./TabList";
 import Card from "./Card";

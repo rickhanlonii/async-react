@@ -30,6 +30,8 @@ export default function LessonList({
   lessons,
   completeAction,
 }: LessonListProps) {
+  
+  console.log('lessonList', lessons);
   if (lessons.length === 0) {
     return (
       <ViewTransition key="empty" default="none" enter="auto" exit="auto">
@@ -39,7 +41,7 @@ export default function LessonList({
   }
 
   return (
-    <ViewTransition key="results" default="none" enter="auto" exit="auto">
+    <ViewTransition key="results" default="none" update="none" enter="auto" exit="auto">
       <Design.List>
         {lessons.map((item) => (
           <ViewTransition key={item.id}>

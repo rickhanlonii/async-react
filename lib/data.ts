@@ -1,4 +1,5 @@
 import * as fuzzy from "fast-fuzzy";
+import { cache } from "react";
 import { getDelay } from "./debug-store";
 
 export interface Lesson {
@@ -54,12 +55,11 @@ const lessons: Lesson[] = [
   },
 ];
 
-export async function getLessons(
+export const getLessons = cache(async function getLessons(
   tab: string,
   search: string
 ): Promise<Lesson[]> {
   const delay = getDelay("/lessons");
-  console.log('delay', delay);
   let filteredLessons = [...lessons];
   if (tab === "wip") {
     filteredLessons = lessons.filter((lesson) => !lesson.complete);
@@ -78,7 +78,7 @@ export async function getLessons(
       resolve(filteredLessons);
     }, delay);
   });
-}
+});
 
 export async function postLessonToggle(id: string): Promise<void> {
   const delay = getDelay("/lesson/:id/toggle");

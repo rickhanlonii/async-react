@@ -14,6 +14,7 @@ export default async function HomeContent({
   tab,
   search,
 }: HomeContentProps) {
+  console.log("HomeContent", tab);
   const lessons = await getLessons(tab, search);
 
   async function searchAction(value: string) {
