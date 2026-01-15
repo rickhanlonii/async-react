@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
@@ -40,6 +38,7 @@ const itemVariants = cva(
         default: "bg-transparent",
         outline: "border-border",
         muted: "bg-muted/50",
+        ghost: "bg-transparent",
       },
       size: {
         default: "p-4 gap-4 ",
@@ -82,6 +81,7 @@ const itemMediaVariants = cva(
         icon: "size-8 border rounded-sm bg-muted [&_svg:not([class*='size-'])]:size-4",
         image:
           "size-10 rounded-sm overflow-hidden [&_img]:size-full [&_img]:object-cover",
+        ghost: "bg-transparent",
       },
     },
     defaultVariants: {

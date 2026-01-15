@@ -1,5 +1,3 @@
-"use client";
-
 import { ItemGroup } from "@/components/ui/item";
 import {
   Item,

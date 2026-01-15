@@ -1,5 +1,3 @@
-"use client";
-
 import { ItemMedia } from "@/components/ui/item";
 import { ShieldAlertIcon } from "lucide-react";
 

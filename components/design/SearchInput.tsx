@@ -8,7 +8,7 @@ import {
 import { SearchIcon } from "lucide-react";
 import { Spinner } from "@/components/ui/spinner";
 import ButtonShimmer from "./ButtonShimmer";
-import { startTransition, useOptimistic } from "react";
+import { startTransition, useEffect, useOptimistic, useRef } from "react";
 import { cn } from "@/lib/utils";
 
 export default function SearchInput({
@@ -18,6 +18,8 @@ export default function SearchInput({
   value: string;
   changeAction: (value: string) => void;
 }) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const [inputValue, setInputValue] = useOptimistic(value);
   const isPending = inputValue !== value;
 
@@ -29,10 +31,15 @@ export default function SearchInput({
     });
   }
 
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, [inputValue, value]);
+
   return (
     <div className="px-8">
       <InputGroup className="relative overflow-hidden">
         <InputGroupInput
+          ref={inputRef}
           placeholder="Search..."
           value={inputValue}
           onChange={handleChange}

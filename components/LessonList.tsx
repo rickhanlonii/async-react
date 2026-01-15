@@ -1,8 +1,6 @@
-"use client";
-
 import { ViewTransition } from "react";
 import * as Design from "@/components/design";
-import type { Lesson } from "@/lib/data";
+import { getLessons, type Lesson } from "@/lib/data";
 
 interface LessonItemProps {
   item: Lesson;
@@ -10,28 +8,30 @@ interface LessonItemProps {
 }
 
 function LessonItem({ item, completeAction }: LessonItemProps) {
-  async function action() {
-    await completeAction(item.id);
-  }
-
   return (
     <Design.LessonCard item={item}>
-      <Design.CompleteButton complete={item.complete} action={action} />
+      <Design.CompleteButton
+        id={item.id}
+        complete={item.complete}
+        action={completeAction}
+      />
     </Design.LessonCard>
   );
 }
 
 interface LessonListProps {
-  lessons: Lesson[];
+  tab: "wip" | "done" | "all";
+  search: string;
   completeAction: (id: string) => Promise<void>;
 }
 
-export default function LessonList({
-  lessons,
+export default async function LessonList({
+  tab,
+  search,
   completeAction,
 }: LessonListProps) {
-  
-  console.log('lessonList', lessons);
+  const lessons = await getLessons(tab, search);
+
   if (lessons.length === 0) {
     return (
       <ViewTransition key="empty" default="none" enter="auto" exit="auto">
@@ -41,7 +41,13 @@ export default function LessonList({
   }
 
   return (
-    <ViewTransition key="results" default="none" update="none" enter="auto" exit="auto">
+    <ViewTransition
+      key="results"
+      default="none"
+      update="none"
+      enter="auto"
+      exit="auto"
+    >
       <Design.List>
         {lessons.map((item) => (
           <ViewTransition key={item.id}>

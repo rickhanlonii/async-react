@@ -1,30 +1,24 @@
-import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import * as Design from "@/components/design";
 import LessonList from "@/components/LessonList";
-import { getLessons, postLessonToggle } from "@/lib/data";
-import { homeUrl } from "@/lib/urls";
+import { revalidateHome } from "@/lib/urls";
+import { postLessonToggle } from "@/lib/data";
+import { Suspense } from "react";
+import FallbackList from "./design/Fallback";
 
 interface HomeContentProps {
-  tab: string;
   search: string;
 }
 
-export default async function HomeContent({
-  tab,
-  search,
-}: HomeContentProps) {
-  console.log("HomeContent", tab);
-  const lessons = await getLessons(tab, search);
-
-  async function searchAction(value: string) {
+export default async function HomeContent({ search }: HomeContentProps) {
+  async function searchAction(search: string) {
     "use server";
-    redirect(homeUrl(tab, value));
+    revalidateHome(search);
   }
 
-  async function tabAction(value: string) {
+  async function tabAction() {
     "use server";
-    redirect(homeUrl(value, search));
+    revalidatePath("/");
   }
 
   async function completeAction(id: string) {
@@ -36,8 +30,28 @@ export default async function HomeContent({
   return (
     <>
       <Design.SearchInput value={search} changeAction={searchAction} />
-      <Design.TabList activeTab={tab} changeAction={tabAction}>
-        <LessonList lessons={lessons} completeAction={completeAction} />
+      <Design.TabList changeAction={tabAction}>
+        <Suspense fallback={<FallbackList />}>
+          <LessonList
+            tab="all"
+            search={search}
+            completeAction={completeAction}
+          />
+        </Suspense>
+        <Suspense fallback={<FallbackList />}>
+          <LessonList
+            tab="wip"
+            search={search}
+            completeAction={completeAction}
+          />
+        </Suspense>
+        <Suspense fallback={<FallbackList />}>
+          <LessonList
+            tab="done"
+            search={search}
+            completeAction={completeAction}
+          />
+        </Suspense>
       </Design.TabList>
     </>
   );

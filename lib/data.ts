@@ -57,7 +57,7 @@ const lessons: Lesson[] = [
 
 export const getLessons = cache(async function getLessons(
   tab: string,
-  search: string
+  search: string,
 ): Promise<Lesson[]> {
   const delay = getDelay("/lessons");
   let filteredLessons = [...lessons];
@@ -72,6 +72,10 @@ export const getLessons = cache(async function getLessons(
       threshold: 0.9,
     });
   }
+
+  filteredLessons = filteredLessons.sort(
+    (a, b) => parseInt(a.id) - parseInt(b.id),
+  );
 
   return new Promise((resolve) => {
     setTimeout(() => {

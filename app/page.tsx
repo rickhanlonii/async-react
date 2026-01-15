@@ -6,11 +6,11 @@ export default async function HomePage({
 }: {
   searchParams: Promise<{ tab?: string; q?: string }>;
 }) {
-  const { tab = "all", q = "" } = await searchParams;
+  const { q = "" } = await searchParams;
 
   return (
     <Layout>
-      <HomeContent tab={tab} search={q} />
+      <HomeContent search={q} />
     </Layout>
   );
 }

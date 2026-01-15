@@ -1,31 +1,49 @@
 "use client";
 
-import { startTransition, useOptimistic } from "react";
+import { startTransition, useOptimistic, useState, Activity } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ButtonShimmer from "./ButtonShimmer";
 
 export default function TabList({
-  activeTab,
   changeAction,
   children,
 }: {
-  activeTab: string;
-  changeAction: (value: string) => void;
+  changeAction: () => void | Promise<void>;
   children: React.ReactNode;
 }) {
-  const [optimisticTab, setActiveTab] = useOptimistic(activeTab);
+  const [tab, setTab] = useState<"all" | "wip" | "done">("all");
 
-  function onTabClick(newValue: string) {
+  const [optimisticTab, setActiveTab] = useOptimistic(tab);
+
+  function onTabClick(newValue: "all" | "wip" | "done") {
     startTransition(async () => {
       setActiveTab(newValue);
-      await changeAction(newValue);
+
+      await changeAction();
+      startTransition(() => {
+        setTab(newValue);
+      });
     });
   }
-  const isPending = optimisticTab !== activeTab;
+  const isPending = optimisticTab !== tab;
+
+  let content;
+  if (tab === "all" && children != null) {
+    // @ts-ignore
+    content = children[0];
+  } else if (tab === "wip") {
+    // @ts-ignore
+    content = children[1];
+  } else if (tab === "done") {
+    // @ts-ignore
+    content = children[2];
+  }
+
   return (
     <Tabs
       activationMode="manual"
       value={optimisticTab}
+      // @ts-ignore
       onValueChange={onTabClick}
       className="relative w-full h-full"
     >
@@ -45,7 +63,7 @@ export default function TabList({
           </TabsTrigger>
         </TabsList>
       </div>
-      {children}
+      {content}
     </Tabs>
   );
 }

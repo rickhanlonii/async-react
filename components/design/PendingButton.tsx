@@ -10,7 +10,7 @@ export default function PendingButton({
   loading,
   children,
 }: {
-  action?: () => Promise<void>;
+  action?: () => Promise<void> | void;
   onClick?: (e: React.MouseEvent) => void;
   loading?: boolean;
   children: React.ReactNode;

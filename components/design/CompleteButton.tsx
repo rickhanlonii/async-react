@@ -7,17 +7,19 @@ import { cn } from "@/lib/utils";
 
 export default function CompleteButton({
   complete,
+  id,
   action,
 }: {
   complete: boolean;
-  action: () => Promise<void>;
+  id: string;
+  action: (id: string) => Promise<void>;
 }) {
   const [optimisticComplete, setOptimisticComplete] = useOptimistic(complete);
 
   function clickAction() {
     startTransition(async () => {
       setOptimisticComplete(!optimisticComplete);
-      await action();
+      await action(id);
     });
   }
 
