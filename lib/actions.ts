@@ -8,6 +8,6 @@ export async function toggleLessonAction(id: string) {
   revalidatePath("/");
 }
 
-export async function loginAction() {
+export async function loginAction(formData: any) {
   await postLogin();
 }

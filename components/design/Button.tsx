@@ -9,13 +9,14 @@ export default function Button({
   action,
 }: {
   children: React.ReactNode;
-  action: () => Promise<void>;
+  action: (formData: any) => Promise<void>;
 }) {
   const [isPending, transition] = useTransition();
 
   function handleClick(e: React.MouseEvent) {
     e.stopPropagation();
     transition(async () => {
+      // @ts-ignore
       await action();
     });
   }
