@@ -14,8 +14,8 @@ export default function SearchInput({ value, changeAction }) {
   const isPending = inputValue !== value;
   function handleChange(e) {
     const newValue = e.target.value;
+    setInputValue(newValue);
     startTransition(async () => {
-      setInputValue(newValue);
       await changeAction(newValue);
     });
   }

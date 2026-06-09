@@ -8,8 +8,8 @@ export default function CompleteButton({ complete, action }) {
   const [optimisticComplete, setOptimisticComplete] = useOptimistic(complete);
 
   function clickAction() {
+    setOptimisticComplete(!optimisticComplete);
     startTransition(async () => {
-      setOptimisticComplete(!optimisticComplete);
       await action();
     });
   }

@@ -7,8 +7,8 @@ export default function TabList({ activeTab, changeAction, children }) {
   const [optimisticTab, setActiveTab] = useOptimistic(activeTab);
 
   function onTabClick(newValue) {
+    setActiveTab(newValue);
     startTransition(async () => {
-      setActiveTab(newValue);
       await changeAction(newValue);
     });
   }
